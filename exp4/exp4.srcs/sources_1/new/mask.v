@@ -24,12 +24,12 @@ module mask(
     input clk_ori,
     output clk_out
     );
-    reg [31:0] count;
-    assign clk_out = count[27];
+    reg [17:0] count;
+    assign clk_out = count[17];
     initial 
         count <= 0;
     always @ (posedge clk_ori)
     begin
-        count[31:0] = count[31:0] + 1;
+        count[17:0] = count[17:0] + 1;
     end
 endmodule

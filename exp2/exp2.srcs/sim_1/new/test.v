@@ -30,7 +30,7 @@ module test(
   main main1(x, clk, y);
   initial begin 
     x = 1;
-    for(i = 0; i < 128; i=i+1) begin 
+    for(i = 0; i < 32; i=i+1) begin 
       #5 clk = 0;
       #5 clk = 1;
     end

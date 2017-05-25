@@ -24,7 +24,6 @@ module test(
   );
   reg in;
   reg clk;
-  integer i;
   integer k;
   wire q1, q2, sig_syn;
   pipe3b pipe3b1(in, clk, q1, q2, sig_syn);
@@ -37,8 +36,8 @@ module test(
 initial 
   begin
   forever begin
-    #5 clk <= 0;
-    #5 clk <= 1;
+    #5120 clk <= 0;
+    #5120 clk <= 1;
     end
   end
   
