@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 100ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -26,29 +26,24 @@ module counter(
     input M,
     input [3:0] base,
     input LD, 
-    output [3:0] Q, 
+    output reg [3:0] Q, 
     output Qcc
   );
-  reg [4:0] QS;
-  assign Q[3:0] = QS[3:0];
-  assign Qcc = QS[4]
-
   initial begin
-    QS[4:0] <= 5'b10000;
+    Q[3:0] = 0;
   end
-  
-  always @ (posedge clk or negedge clk or negedge clear or negedge LD) begin
+  assign Qcc = (M==0)? Q!=4'b1111 : Q!=0;
+  always @ (posedge clk or negedge clear or negedge LD) begin
     if(clear==0)
-      QS[3:0] <= 4'b0;
-    else if (LD==0)
-      QS[3:0] <= base[3:0];
-    else if (clk == 0)
-      QS[4] <= 1;
+      Q[3:0] <= 4'b0000;
+    else if (LD==0) begin 
+      Q[3:0] <= base[3:0];
+    end
     else begin
       if(M==0)
-        QS <= QS + 1;
+        Q[3:0] <= Q[3:0] + 1;
       else 
-        QS <= QS - 1;
+        Q[3:0] <= Q[3:0] - 1;
     end
   end
 endmodule
