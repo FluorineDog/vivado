@@ -6,4 +6,5 @@
 **/*.jou
 **/*.log
 **/*.xpr
-
+tmp/*
+.vscode/*
