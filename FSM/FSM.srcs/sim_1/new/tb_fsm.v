@@ -26,8 +26,7 @@ module tb_fsm(
   reg x;
   wire out1;
   wire [2:0] state;
-  wire bit;
-  fsm fsm0(clk, 0, x, out1, state, bit);
+  fsm fsm0(clk, 0, x, out1, state);
   initial begin
     x = 0;
     clk = 0; #5

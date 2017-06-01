@@ -26,8 +26,7 @@ module fsm(
   input wire x,
   // Outputs
   output Output1,
-  output [2:0] Status,
-  output reg bit
+  output [2:0] Status
   );
  
   // State Encoding
@@ -64,9 +63,9 @@ module fsm(
     CurrentState = STATE_Initial;
     NextState = STATE_Initial;
   end
-  always@(posedge Clock) begin
-    bit <= x;
-  end
+//  always@(posedge Clock) begin
+//    bit <= x;
+//  end
   always@ ( posedge Clock ) begin
     if ( Reset ) CurrentState <= STATE_Initial;
     else CurrentState <= NextState;
