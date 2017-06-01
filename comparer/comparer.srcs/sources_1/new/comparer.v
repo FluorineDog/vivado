@@ -23,11 +23,9 @@
 module comparer(
   input A, 
   input B, 
-  output F1,
-  output F2,
-  output F3
+  output [3:1] F
   );
-  assign F1 = A>B;
-  assign F2 = A==B;
-  assign F3 = A<B;
+  assign F[1] = A>B;
+  assign F[2] = A==B;
+  assign F[3] = A<B;
 endmodule
