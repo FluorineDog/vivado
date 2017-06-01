@@ -1,11 +1,11 @@
-`timescale 1ns / 100ps
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
 // 
-// Create Date: 05/31/2017 01:55:04 PM
+// Create Date: 05/31/2017 06:42:32 PM
 // Design Name: 
-// Module Name: main
+// Module Name: tb_main
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,16 +20,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module main(
-  input clk,
-  input LD,
-  output [3:0] Q,
-  output reg Qcc
+module tb_main(
   );
-  wire trigger;
-  wire fakeQcc;
-  always @ (posedge clk)
-    Qcc <= !(Q == 7);
-  assign trigger = !Q[3];
-  counter counter0(clk, trigger, 0, 2, LD, Q, fakeQcc);
+  reg clk;
+  wire [3:0] Q;
+  wire Qcc;
+  main main0(clk, Q, Qcc);
+  integer i;
+  initial begin
+    clk = 0;
+    for(i = 0; i < 40; i=i+1) begin
+      #30 clk = 1;
+      #50 clk = 0;
+      #20 ;
+    end
+  end
 endmodule
