@@ -7,7 +7,7 @@
 // Design Name: 
 // Module Name: main
 // Project Name: 
-// Target Devices: 
+// Target Devices:  
 // Tool Versions: 
 // Description: 
 // 
@@ -21,12 +21,12 @@
 
 
 module main(
-  input A[2:0],
-  input B[2:0],
+  input [2:0] A,
+  input [2:0] B,
   output [3:1] F3
   );
   wire [3:1] midFA;
-//   wire [3:1] midFB;
+  wire [3:1] midFB;
   wire [3:1] tmpFB;
   wire [3:1] tmpFC;
   
