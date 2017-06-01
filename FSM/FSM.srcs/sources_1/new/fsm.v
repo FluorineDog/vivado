@@ -23,12 +23,11 @@ module fsm(
   // Inputs
   input wire Clock,
   input wire Reset,
-  input wire A,
-  input wire B,
+  input wire x,
   // Outputs
-  output wire Output1,
-  output wire Output2,
-  output reg [2:0] Status
+  output Output1,
+  output [2:0] Status,
+  output reg bit
   );
  
   // State Encoding
@@ -36,8 +35,8 @@ module fsm(
              STATE_1 = 3'd1,
              STATE_2 = 3'd2,
              STATE_3 = 3'd3,
-             STATE_4 = 3'd4,
-             STATE_5_PlaceHolder = 3'd5,
+             STATE_4 = 3'd5,
+             STATE_5 = 3'd4,
              STATE_6_PlaceHolder = 3'd6,
              STATE_7_PlaceHolder = 3'd7;
   // State reg Declarations
@@ -46,54 +45,51 @@ module fsm(
 
   // Outputs
   // 1 -bit outputs
-  assign Output1 = ( CurrentState == STATE_1 ) | ( CurrentState == STATE_2 );
-  assign Output2 = ( CurrentState == STATE_2 );
- 
-  // multi-bit outputs
-  always@ ( * ) begin
-    Status = 3’b000;
-    case ( CurrentState )
-      STATE_2: begin
-        Status = 3’b010;
-      end
-      STATE_3: begin
-        Status = 3’b011;
-      end
-    endcase
-  end 
+  assign Output1 = (CurrentState==STATE_5);
+  assign Status = CurrentState;
+//  // multi-bit outputs
+//  always@ (*) begin
+//    Status = 3’b000;
+//    case ( CurrentState )
+//      STATE_2: begin
+//        Status = 3’b010;
+//      end
+//      STATE_3: begin
+//        Status = 3’b011;
+//      end
+//    endcase
+//  end 
   // Synchronous State - Transition always@ ( posedge Clock ) block
+  initial begin
+    CurrentState = STATE_Initial;
+    NextState = STATE_Initial;
+  end
+  always@(posedge Clock) begin
+    bit <= x;
+  end
   always@ ( posedge Clock ) begin
     if ( Reset ) CurrentState <= STATE_Initial;
     else CurrentState <= NextState;
   end
   // Conditional State - Transition always@ ( * ) block
-  always@ ( * ) begin
-    NextState = CurrentState;
+  always@ (*) begin
     case(CurrentState)
-      STATE_Initial: begin
-        NextState = STATE_1;
-      end
-      STATE_1: begin
-        if ( A & B ) NextState = STATE_2;
-      end
-      STATE_2: begin
-        if ( A ) NextState = STATE_3;
-      end
-      STATE_3: begin
-        if (! A & B ) NextState = STATE_Initial;
-        else if ( A & ! B ) NextState = STATE_4;
-      end
-      STATE_4: begin
-      end
-      STATE_5_PlaceHolder: begin
+      STATE_Initial: 
+        NextState = (x)? STATE_1:STATE_Initial;
+      STATE_1:
+        NextState = (x)? STATE_1:STATE_2;
+      STATE_2: 
+        NextState = (x)? STATE_3:STATE_Initial;
+      STATE_3: 
+        NextState = (x)? STATE_4:STATE_2;
+      STATE_4: 
+        NextState = (x)? STATE_3:STATE_5;
+      STATE_5: 
+        NextState = (x)? STATE_1:STATE_Initial;
+      STATE_6_PlaceHolder: 
         NextState = STATE_Initial;
-      end
-      STATE_6_PlaceHolder: begin
+      STATE_7_PlaceHolder: 
         NextState = STATE_Initial;
-      end
-      STATE_7_PlaceHolder: begin
-        NextState = STATE_Initial;
-      end
     endcase
   end
 endmodule
