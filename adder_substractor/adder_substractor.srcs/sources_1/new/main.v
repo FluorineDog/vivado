@@ -5,7 +5,7 @@
 // 
 // Create Date: 05/31/2017 01:55:04 PM
 // Design Name: 
-// Module Name: main
+// Module Name: maining
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -16,7 +16,7 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//  
 //////////////////////////////////////////////////////////////////////////////////
 
 

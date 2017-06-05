@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 100ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -22,14 +22,28 @@
 
 module tb_main(
   );
-  reg clk;
+  reg clk; 
+  reg LD;
   wire [3:0] Q;
   wire Qcc;
-  main main0(clk, Q, Qcc);
+  main main0(clk, LD, Q, Qcc);
   integer i;
   initial begin
     clk = 0;
-    for(i = 0; i < 40; i=i+1) begin
+    LD = 1;
+    for(i = 0; i < 5; i=i+1) begin
+      #30 clk = 1;
+      #50 clk = 0;
+      #20 ;
+    end
+    LD = 0;
+    for(i = 0; i < 5; i=i+1) begin
+      #30 clk = 1;
+      #50 clk = 0;
+      #20 ;
+    end
+    LD = 1;
+    for(i = 0; i < 100; i=i+1) begin
       #30 clk = 1;
       #50 clk = 0;
       #20 ;
