@@ -29,6 +29,7 @@ module tb_fsm(
   fsm fsm0(clk, 0, x, out1, state);
   initial begin
     x = 0;
+    clk = 0; #50
     clk = 0; #5
     clk = 1; #5 
     clk = 0; #5
