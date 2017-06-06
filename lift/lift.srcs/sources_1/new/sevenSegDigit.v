@@ -22,7 +22,7 @@
 
 module sevenSegDigit(
   input [3:0] digit, 
-  output [7:0] seg_data
+  output reg [7:0] seg_data
   );
   always @(digit)
   case (digit)
@@ -36,12 +36,12 @@ module sevenSegDigit(
       4'h7: seg_data = 8'b00011111;
       4'h8: seg_data = 8'b00000001; 
       4'h9: seg_data = 8'b00001001;
-      4'hA: seg_data = 8'b00010001;
+      4'ha: seg_data = 8'b00010001;
       4'hb: seg_data = 8'b11000001;
       4'hC: seg_data = 8'b01100011;
       4'hd: seg_data = 8'b10000101;
-      4'hE: seg data = 8'b01100001;
-      4'hF: seg data = 8'b01110001;
+      4'he: seg_data = 8'b01100001;
+      4'hf: seg_data = 8'b01110001;
    default: 
             seg_data = 8'b11111101;
   endcase

@@ -32,7 +32,7 @@ module sevenSeg(
   reg [7:0] timer_seg;
   integer i;  
 
-  sevenSegDigit ssd0({1b'0, lift_floor},lift_floor_seg);
+  sevenSegDigit ssd0(lift_floor, lift_floor_seg);
   sevenSegDigit ssd1(timer, timer_seg);
 
   initial begin
@@ -40,13 +40,14 @@ module sevenSeg(
   end
 
   always @(*) begin
-    for(i=0;i<8;++i)begin
-      AN[i]=(choose!=i)
+    for(i=0;i<8;i=i+1)begin
+      AN[i]=(choose!=i);
     end
     case(choose)
       'h0:     seg_data = lift_floor_seg;
       'h7:     seg_data = timer_seg;
       default  seg_data = 8'b11111101;
+    endcase
   end
   
   always @(posedge clk) begin
