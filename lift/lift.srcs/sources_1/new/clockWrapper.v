@@ -26,9 +26,10 @@ module clockWrapper(
   );
   reg [31:0] counter;
   initial begin
-    counter = 0;
+    counter = 1;
   end
   always@ (posedge clk100MHz) begin
     counter <= (counter >= 200000) ? 0:(counter+1);
   end
+  assign clk500Hz = (counter<100000);
 endmodule

@@ -24,8 +24,8 @@ module tmpTest(
   input [2:0] lift_floor, 
   input [3:0] timer,     
   input clk100MHz,      // require : 1ms-4ms period
-  output reg [7:0] AN,
-  output reg [7:0] seg_data
+  output [7:0] AN,
+  output [7:0] seg_data
   );
   wire clk;
   clockWrapper cw0(clk100MHz, clk);

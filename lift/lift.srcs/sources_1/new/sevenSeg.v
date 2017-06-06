@@ -28,11 +28,11 @@ module sevenSeg(
   output reg [7:0] seg_data
   );
   reg [2:0] choose;
-  reg [7:0] lift_floor_seg;
-  reg [7:0] timer_seg;
+  wire [7:0] lift_floor_seg;
+  wire [7:0] timer_seg;
   integer i;  
 
-  sevenSegDigit ssd0(lift_floor, lift_floor_seg);
+  sevenSegDigit ssd0({1'b0, lift_floor[2:0]}, lift_floor_seg);
   sevenSegDigit ssd1(timer, timer_seg);
 
   initial begin
