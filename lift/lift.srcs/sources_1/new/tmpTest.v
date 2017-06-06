@@ -23,8 +23,11 @@
 module tmpTest(
   input [2:0] lift_floor, 
   input [3:0] timer,     
-  input clk,      // require : 1ms-4ms period
+  input clk100MHz,      // require : 1ms-4ms period
   output reg [7:0] AN,
   output reg [7:0] seg_data
   );
+  wire clk;
+  clockWrapper cw0(clk100MHz, clk);
+  sevenSeg ss0(lift_floor, timer, clk, AN, seg_data);
 endmodule
