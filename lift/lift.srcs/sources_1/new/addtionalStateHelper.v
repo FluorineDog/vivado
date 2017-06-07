@@ -26,7 +26,7 @@ module addtionalStateHelper(
   input [7:0] down,
   input [7:0] inner_button,
   input [3:0] current_floor,
-  input [2:0] st,
+  input isStoping,
   output reg [7:0] up_enabled,
   output reg [7:0] down_enabled,
   output reg [7:0] inner_button_enabled,
