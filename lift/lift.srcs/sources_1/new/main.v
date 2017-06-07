@@ -25,12 +25,12 @@ module main(
   input clk1Hz, 
   input [7:0] up,
   input [7:0] down,
-  output reg [7:0] up_enabled,
-  output reg [7:0] down_enabled,
+  output [7:0] up_enabled,
+  output [7:0] down_enabled,
   input [7:0] inner_button,
-  output reg [7:0] inner_button_enabled,
-  output reg [3:0] elevator_statue,
-  output reg [2:0] current_floor,
+  output [7:0] inner_button_enabled,
+  output [3:0] elevator_statue,
+  output [2:0] current_floor,
   input force_open,
   input force_close,
   output reg [3:0] timer
@@ -51,14 +51,16 @@ module main(
              CHECKFLOOR_TIME   = 3,
              TRANSFLOOR_TIME   = 3,
              STOP_DELAY        = 0;
-
+  reg [2:0] newState;
   reg [2:0] state;
   reg [31:0] unixTime;
   reg [31:0] delay;
   reg [31:0] duetime;
   reg direction;
   assign elevator_statue = {direction, state[2:0]};
-
+  assign isStopping = state <= CLOSING_STATE;
+  additionalStateHelper(clk250Hz, up, down, inner_button, current_floor, isStopping, 
+                        up_enabled, down_enabled, inner_button_enabled, direction);
   initial begin
     state = STOP_STATE;
     unixTime = 0;
