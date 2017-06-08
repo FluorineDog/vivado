@@ -67,7 +67,10 @@ module main(
   initial begin
     state = STOP_STATE;
   end
+
+  reg [2:0] updateFloor;
   always @ (*) begin
+    updateFloor = current_floor;
     case (state)
       STOP_STATE    : begin
           if(openCond) begin 
@@ -103,6 +106,7 @@ module main(
         end
       ONGOING_STATE : begin
           if(decCond) begin
+            updateFloor = next_floor;
             newState = DEC_STATE;
             delay = DEC_TIME;
           end
@@ -112,6 +116,7 @@ module main(
           end
         end
       DEC_STATE     : begin
+          updateFloor = next_floor;
           newState = STOP_STATE;
           delay = STOP_DELAY;
        end
@@ -124,6 +129,7 @@ module main(
     unixTime <= unixTime + 1;
     if(timeoutCond || openCond) begin
       state <= newState;
+      current_floor <= updateFloor;
     end
   end
 endmodule

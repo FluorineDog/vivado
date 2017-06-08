@@ -32,19 +32,17 @@ module addtionalStateHelper(
   output reg [7:0] down_enabled,
   output reg [7:0] inner_button_enabled,
   input [1:0] direction,
-  output [1:0] nextDirection,
-  output 
+  output [1:0] nextDirection
   );
   wire up_request;
   wire down_request;
-  
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
   wire [7:0] floor_mask = (isStoping) ? (1<<current_floor) : 8'b0;
   initial begin
     up_enabled = 0;
     down_enabled = 0;
-    direction = DIRECT_UP;
+    inner_button_enabled = 0;
   end
   assign up_request = 
     ((up_enabled | down_enabled | inner_button_enabled) 
@@ -61,6 +59,5 @@ module addtionalStateHelper(
     up_enabled <= ((up & ~(1<<7)) | up_enabled) & ~((direction[D_UP])? floor_mask : 8'b0);
     down_enabled <= ((down & ~1) | down_enabled) & ~((direction[D_DOWN])? floor_mask : 8'b0);
     inner_button_enabled <= (inner_button | inner_button_enabled) & ~floor_mask; 
-   end
   end
 endmodule
