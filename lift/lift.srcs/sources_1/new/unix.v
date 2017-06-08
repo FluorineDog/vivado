@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 06/06/2017 03:43:49 PM
+// Create Date: 06/08/2017 04:27:10 PM
 // Design Name: 
-// Module Name: clockWrapper
+// Module Name: unix
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,16 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module clockWrapper(
-  input clk100MHz,  
-  output clk250Hz
+module unix(
   );
-  reg [31:0] counter;
-  initial begin
-    counter = 1;
-  end
-  always@ (posedge clk100MHz) begin
-    counter <= (counter >= 400000) ? 0:(counter+1);
-  end
-  assign clk500Hz = (counter<200000);
+  
 endmodule

@@ -25,18 +25,18 @@ module decCondition(
   input [1:0] direction,
   input [7:0] up_enabled,
   input [7:0] down_enabled, 
-  input [7:0] inner_button_enabled 
-  output reg decCond;
+  input [7:0] inner_button_enabled,
+  output reg decCond
   );
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
   always @(*) begin
     if(direction[D_UP]) begin
-      decCond = (up_enabled|inner_button_enabled)[next_floor] 
+      decCond = (up_enabled[next_floor]|inner_button_enabled[next_floor]) 
         && (up_enabled|inner_button_enabled|down_enabled)>>(1+next_floor);
     end 
     else if(direction[D_DOWN]) begin
-      decCond = (down_enabled|inner_button_enabled)[next_floor] 
+      decCond = (down_enabled[next_floor] |inner_button_enabled[next_floor])
         && (up_enabled|inner_button_enabled|down_enabled)>>(8-next_floor);
     end
   end

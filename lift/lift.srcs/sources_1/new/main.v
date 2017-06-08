@@ -22,7 +22,7 @@
 
 module main(
   input RST,
-  input clk1Hz, 
+  input clk250Hz, 
   input [7:0] up,
   input [7:0] down,
   output [7:0] up_enabled,
@@ -36,10 +36,10 @@ module main(
   output reg [3:0] timer
 
   );
-  localparam STOP_STATE      = 3'h0,
-             OPENING_STATE   = 3'h1,
-             OPENED_STATE    = 3'h2,
-             CLOSING_STATE   = 3'h3,
+  localparam OPENING_STATE   = 3'h0,
+             OPENED_STATE    = 3'h1,
+             CLOSING_STATE   = 3'h2,
+             STOP_STATE      = 3'h3,
              ACC_STATE       = 3'h4,
              ONGOING_STATE   = 3'h5,
              DEC_STATE       = 3'h6;
@@ -58,18 +58,20 @@ module main(
   reg [31:0] duetime;
   reg [1:0] direction;
   wire [1:0] nextDirection;
-  wire accCond;
+  wire accCond, decCond, closeCond, openCond;
+  wire next_floor;
   assign elevator_statue = {direction, state[2:0]};
-  assign isStopping = state <= CLOSING_STATE;
-  assign isDirectionChangable = (state == CLOSING_STATE) || (state == STOP_STATE);
+  assign isStopping = state <= STOP_STATE;
   additionalStateHelper(clk250Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
-                        direction, nextDirection, );
+                        direction, nextDirection, accCond);
+  openCondition opc0(state, current_floor, up, down, force_open, force_close, 
+                     openCond, closeCond);
+  decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
   initial begin
     state = STOP_STATE;
   end
-
   reg [2:0] updateFloor;
   always @ (*) begin
     updateFloor = current_floor;
@@ -89,13 +91,19 @@ module main(
           delay = OPEN_DELAY;
         end
       OPENED_STATE  : begin
-          newState = CLOSING_STATE;
-          delay = CLOSE_TIME;
+          if(openCond) begin 
+            newState = OPENED_DELAY;
+            delay = OPENED_DELAY;
+          end
+          else begin
+            newState = CLOSING_STATE;
+            delay = CLOSE_TIME;
+          end 
         end
       CLOSING_STATE : begin
           if(openCond) begin
             newState = OPENING_STATE;
-            delay = unixTime + OPEN_TIME - duetime;
+            delay = unixTime + OPEN_TIME - duetime + 1;
           end
           else begin
             newState = STOP_STATE;
@@ -127,8 +135,7 @@ module main(
         end
     endcase
   end
-  always @ (posedge clk1Hz, negedge RST) begin 
-    unixTime <= unixTime + 1;
+  always @ (posedge clk250Hz, negedge RST) begin 
     if(timeoutCond || openCond || closeCond) begin
       state <= newState;
       current_floor <= updateFloor;
