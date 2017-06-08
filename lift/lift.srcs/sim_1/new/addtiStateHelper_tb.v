@@ -70,6 +70,10 @@ module addtiStateHelper_tb(
     current_floor = next_floor;
     #20
     current_floor = next_floor;
+    #10
+    isStopping = 1;
+    #20 
+    isStopping = 0;
     #20
     current_floor = next_floor;
     #10
@@ -79,9 +83,69 @@ module addtiStateHelper_tb(
     #20
     current_floor = next_floor; //always updating when isStopping = 0;
     #10
-    isStopping = 1;
+    direction = nextDirection;
     #20
     current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
+    #20
+    current_floor = next_floor; //always updating when isStopping = 0;
+    #10
+    direction = nextDirection;
+    #10
+    isStopping = 1;
+    #10 
+    isStopping = 0;
     #20
     current_floor = next_floor; //always updating when isStopping = 0;
   end

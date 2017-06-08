@@ -34,6 +34,7 @@ module main(
   input force_open,
   input force_close,
   output reg [3:0] timer
+
   );
   localparam STOP_STATE      = 3'h0,
              OPENING_STATE   = 3'h1,
@@ -57,13 +58,14 @@ module main(
   reg [31:0] duetime;
   reg [1:0] direction;
   wire [1:0] nextDirection;
+  wire accCond;
   assign elevator_statue = {direction, state[2:0]};
   assign isStopping = state <= CLOSING_STATE;
   assign isDirectionChangable = (state == CLOSING_STATE) || (state == STOP_STATE);
   additionalStateHelper(clk250Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
-                        direction, nextDirection);
+                        direction, nextDirection, );
   initial begin
     state = STOP_STATE;
   end
