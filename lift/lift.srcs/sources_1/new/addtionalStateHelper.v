@@ -27,20 +27,20 @@ module addtionalStateHelper(
   input [7:0] inner_button,
   input [2:0] current_floor,
   output [2:0] next_floor,
-  input isStoping,
+  input isStopping,
   output reg [7:0] up_enabled,
   output reg [7:0] down_enabled,
   output reg [7:0] inner_button_enabled,
   input [1:0] direction,
   output [1:0] nextDirection,
-  output up_request,
-  output down_request
+  output accCond
   );
   wire up_request;
   wire down_request;
+  assign accCond = up_request && down_request;
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
-  wire [7:0] floor_mask = 1<<current_floor;
+  wire [7:0] floor_mask = isStopping?1<<current_floor:0;
   initial begin
     up_enabled = 0;
     down_enabled = 0;

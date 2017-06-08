@@ -129,9 +129,10 @@ module main(
   end
   always @ (posedge clk1Hz, negedge RST) begin 
     unixTime <= unixTime + 1;
-    if(timeoutCond || openCond) begin
+    if(timeoutCond || openCond || closeCond) begin
       state <= newState;
       current_floor <= updateFloor;
+      duetime <= unixTime + delay;
     end
   end
 endmodule

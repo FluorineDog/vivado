@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 06/06/2017 10:54:19 AM
+// Create Date: 06/08/2017 11:38:30 AM
 // Design Name: 
-// Module Name: accCondition
+// Module Name: stateHelper
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,8 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module accCondition(
+module stateHelper(
 
   );
-
 endmodule
