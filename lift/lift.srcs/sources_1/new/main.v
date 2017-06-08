@@ -30,10 +30,9 @@ module main(
   input [7:0] inner_button,
   output [7:0] inner_button_enabled,
   output [3:0] elevator_statue,
-  output [2:0] current_floor,
+  output reg [2:0] current_floor,
   input force_open,
-  input force_close,
-  output reg [3:0] timer
+  input force_close
 
   );
   localparam OPENING_STATE   = 3'h0,
@@ -59,16 +58,19 @@ module main(
   reg [1:0] direction;
   wire [1:0] nextDirection;
   wire accCond, decCond, closeCond, openCond;
-  wire next_floor;
+  wire [2:0] next_floor;
+  wire [31:0] unix_timestamp;
   assign elevator_statue = {direction, state[2:0]};
   assign isStopping = state <= STOP_STATE;
-  additionalStateHelper(clk250Hz, up, down, inner_button, 
+  addtionalStateHelper ash0(clk250Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
                         direction, nextDirection, accCond);
   openCondition opc0(state, current_floor, up, down, force_open, force_close, 
                      openCond, closeCond);
   decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
+  unix ux0(clk250Hz, unix_timestamp);
+  assign timeoutCond = duetime >= unix_timestamp;
   initial begin
     state = STOP_STATE;
   end
@@ -88,7 +90,7 @@ module main(
         end
       OPENING_STATE : begin
           newState = OPENED_STATE;
-          delay = OPEN_DELAY;
+          delay = OPENED_DELAY;
         end
       OPENED_STATE  : begin
           if(openCond) begin 
@@ -103,7 +105,7 @@ module main(
       CLOSING_STATE : begin
           if(openCond) begin
             newState = OPENING_STATE;
-            delay = unixTime + OPEN_TIME - duetime + 1;
+            delay = unix_timestamp + OPEN_TIME - duetime + 1;
           end
           else begin
             newState = STOP_STATE;
@@ -135,11 +137,17 @@ module main(
         end
     endcase
   end
-  always @ (posedge clk250Hz, negedge RST) begin 
+  always @ (posedge clk250Hz) begin
+    direction <= nextDirection;
     if(timeoutCond || openCond || closeCond) begin
       state <= newState;
       current_floor <= updateFloor;
-      duetime <= unixTime + delay;
+      duetime <= unix_timestamp + delay;
+    end
+    else begin
+      state <= newState;
+      current_floor <= updateFloor; 
+      duetime <= duetime;
     end
   end
 endmodule
