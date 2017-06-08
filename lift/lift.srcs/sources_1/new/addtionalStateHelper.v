@@ -37,7 +37,7 @@ module addtionalStateHelper(
   );
   wire up_request;
   wire down_request;
-  assign accCond = up_request && down_request;
+  assign accCond = up_request || down_request;
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
   wire [7:0] floor_mask = isStopping?1<<current_floor:0;

@@ -3,79 +3,97 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="addtiStateHelper_tb_behav.wdb" id="1">
+      <db_ref path="mian_tb_behav.wdb" id="1">
          <top_modules>
-            <top_module name="addtiStateHelper_tb" />
             <top_module name="glbl" />
+            <top_module name="mian_tb" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1365276212fs"></ZoomEndTime>
-      <Cursor1Time time="105000000fs"></Cursor1Time>
+      <ZoomEndTime time="57053941909fs"></ZoomEndTime>
+      <Cursor1Time time="6729333000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="124"></NameColumnWidth>
+      <NameColumnWidth column_width="108"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="14" />
-   <wvobject type="logic" fp_name="/addtiStateHelper_tb/clk250Hz">
+   <WVObjectSize size="19" />
+   <wvobject type="logic" fp_name="/mian_tb/clk250Hz">
       <obj_property name="ElementShortName">clk250Hz</obj_property>
       <obj_property name="ObjectShortName">clk250Hz</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/up">
+   <wvobject type="array" fp_name="/mian_tb/up">
       <obj_property name="ElementShortName">up[7:0]</obj_property>
       <obj_property name="ObjectShortName">up[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/down">
+   <wvobject type="array" fp_name="/mian_tb/down">
       <obj_property name="ElementShortName">down[7:0]</obj_property>
       <obj_property name="ObjectShortName">down[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/inner_button">
-      <obj_property name="ElementShortName">inner_button[7:0]</obj_property>
-      <obj_property name="ObjectShortName">inner_button[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/current_floor">
-      <obj_property name="ElementShortName">current_floor[3:0]</obj_property>
-      <obj_property name="ObjectShortName">current_floor[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/addtiStateHelper_tb/isStopping">
-      <obj_property name="ElementShortName">isStopping</obj_property>
-      <obj_property name="ObjectShortName">isStopping</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/direction">
-      <obj_property name="ElementShortName">direction[1:0]</obj_property>
-      <obj_property name="ObjectShortName">direction[1:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/next_floor">
-      <obj_property name="ElementShortName">next_floor[3:0]</obj_property>
-      <obj_property name="ObjectShortName">next_floor[3:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/up_enabled">
-      <obj_property name="ElementShortName">up_enabled[7:0]</obj_property>
-      <obj_property name="ObjectShortName">up_enabled[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/down_enabled">
+   <wvobject type="array" fp_name="/mian_tb/down_enabled">
       <obj_property name="ElementShortName">down_enabled[7:0]</obj_property>
       <obj_property name="ObjectShortName">down_enabled[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/inner_button_enabled">
+   <wvobject type="array" fp_name="/mian_tb/inner_button">
+      <obj_property name="ElementShortName">inner_button[7:0]</obj_property>
+      <obj_property name="ObjectShortName">inner_button[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/inner_button_enabled">
       <obj_property name="ElementShortName">inner_button_enabled[7:0]</obj_property>
       <obj_property name="ObjectShortName">inner_button_enabled[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/addtiStateHelper_tb/nextDirection">
-      <obj_property name="ElementShortName">nextDirection[1:0]</obj_property>
-      <obj_property name="ObjectShortName">nextDirection[1:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   <wvobject type="array" fp_name="/mian_tb/elevator_statue">
+      <obj_property name="ElementShortName">elevator_statue[3:0]</obj_property>
+      <obj_property name="ObjectShortName">elevator_statue[3:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/addtiStateHelper_tb/D_UP">
-      <obj_property name="ElementShortName">D_UP</obj_property>
-      <obj_property name="ObjectShortName">D_UP</obj_property>
+   <wvobject type="array" fp_name="/mian_tb/current_floor">
+      <obj_property name="ElementShortName">current_floor[2:0]</obj_property>
+      <obj_property name="ObjectShortName">current_floor[2:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/addtiStateHelper_tb/D_DOWN">
-      <obj_property name="ElementShortName">D_DOWN</obj_property>
-      <obj_property name="ObjectShortName">D_DOWN</obj_property>
+   <wvobject type="logic" fp_name="/mian_tb/force_open">
+      <obj_property name="ElementShortName">force_open</obj_property>
+      <obj_property name="ObjectShortName">force_open</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mian_tb/force_close">
+      <obj_property name="ElementShortName">force_close</obj_property>
+      <obj_property name="ObjectShortName">force_close</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mian_tb/accCond">
+      <obj_property name="ElementShortName">accCond</obj_property>
+      <obj_property name="ObjectShortName">accCond</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mian_tb/decCond">
+      <obj_property name="ElementShortName">decCond</obj_property>
+      <obj_property name="ObjectShortName">decCond</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mian_tb/closeCond">
+      <obj_property name="ElementShortName">closeCond</obj_property>
+      <obj_property name="ObjectShortName">closeCond</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mian_tb/openCond">
+      <obj_property name="ElementShortName">openCond</obj_property>
+      <obj_property name="ObjectShortName">openCond</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/mian_tb/timeoutCond">
+      <obj_property name="ElementShortName">timeoutCond</obj_property>
+      <obj_property name="ObjectShortName">timeoutCond</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/main0/ux0/timestamp">
+      <obj_property name="ElementShortName">timestamp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">timestamp[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/main0/state">
+      <obj_property name="ElementShortName">state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/main0/next_floor">
+      <obj_property name="ElementShortName">next_floor[2:0]</obj_property>
+      <obj_property name="ObjectShortName">next_floor[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/main0/updateFloor">
+      <obj_property name="ElementShortName">updateFloor[2:0]</obj_property>
+      <obj_property name="ObjectShortName">updateFloor[2:0]</obj_property>
    </wvobject>
 </wave_config>

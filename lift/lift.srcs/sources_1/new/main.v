@@ -59,7 +59,7 @@ module main(
   reg [1:0] direction;
   wire [1:0] nextDirection;
   wire isStopping;
-  wire accCond, decCond, closeCond, openCond, timeoutCond;
+  //wire accCond, decCond, closeCond, openCond, timeoutCond;
   wire [2:0] next_floor;
   wire [31:0] unix_timestamp;
   assign elevator_statue = {direction, state[2:0]};
@@ -72,14 +72,19 @@ module main(
                      openCond, closeCond);
   decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
   unix ux0(clk250Hz, unix_timestamp);
-  assign timeoutCond = duetime >= unix_timestamp;
+  assign timeoutCond = duetime <= unix_timestamp;
   initial begin
     state = STOP_STATE;
+    direction = 0;
+    duetime = 0;
+    current_floor = 0;
+    delay = 0;
   end
   reg [2:0] updateFloor;
   always @ (*) begin
     updateFloor = current_floor;
     newState = state;
+    delay = 0;
     case (state)
       STOP_STATE    : begin
           if(openCond) begin 
@@ -147,9 +152,9 @@ module main(
       current_floor <= updateFloor;
       duetime <= unix_timestamp + delay;
     end
-    else begin
-      state <= newState;
-      current_floor <= updateFloor; 
+    else begin 
+      state <= state;
+      current_floor <= current_floor;
       duetime <= duetime;
     end
   end

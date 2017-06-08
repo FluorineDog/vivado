@@ -33,11 +33,11 @@ module decCondition(
   always @(*) begin
     if(direction[D_UP]) begin
       decCond = (up_enabled[next_floor]|inner_button_enabled[next_floor]) 
-        && (up_enabled|inner_button_enabled|down_enabled)>>(1+next_floor);
+        || !(up_enabled|inner_button_enabled|down_enabled)>>(1+next_floor);
     end 
     else if(direction[D_DOWN]) begin
       decCond = (down_enabled[next_floor] |inner_button_enabled[next_floor])
-        && (up_enabled|inner_button_enabled|down_enabled)>>(8-next_floor);
+        || !(up_enabled|inner_button_enabled|down_enabled)>>(8-next_floor);
     end
     else 
       decCond = 0;

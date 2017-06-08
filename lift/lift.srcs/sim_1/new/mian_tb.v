@@ -22,7 +22,7 @@
 
 module mian_tb(
   );
-  reg clk250Hz; 
+  reg clk250Hz = 0; 
   reg [7:0] up;
   reg [7:0] down;
   wire [7:0] up_enabled;
@@ -30,10 +30,30 @@ module mian_tb(
   reg [7:0] inner_button;
   wire [7:0] inner_button_enabled;
   wire [3:0] elevator_statue;
-  wire reg [2:0] current_floor;
+  wire [2:0] current_floor;
   reg force_open;
   reg force_close;
   wire accCond, decCond, closeCond, openCond, timeoutCond;
+  main main0(clk250Hz, up, down, up_enabled, down_enabled, inner_button, inner_button_enabled,
+            elevator_statue, current_floor, force_open, force_close, 
+            accCond, decCond, closeCond, openCond, timeoutCond);
+  always #2 clk250Hz = ~clk250Hz;
+  initial begin
+    up           = 0;
+    down         = 0;
+    inner_button = 0;
+    force_open   = 0;
+    force_close  = 0;
+    #1000;
+    up =   8'b0010_0010;
+    down = 8'b0110_1000;
+    inner_button = 8'b0100_0000;
+    #10;
+    up           = 0;
+    down         = 0;
+    inner_button = 0;
+    #100000;
+    
 
- 
+  end
 endmodule

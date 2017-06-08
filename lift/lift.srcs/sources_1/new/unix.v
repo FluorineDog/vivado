@@ -30,7 +30,7 @@ module unix(
     counter = 30;
   end
   always @ (posedge clk250Hz)  begin
-    if(counter<250) begin
+    if(counter>=250) begin
       counter <= 0;
       timestamp <= timestamp + 1;
     end
