@@ -21,7 +21,7 @@
 
 
 module main(
-  input RST,
+//  input RST,
   input clk250Hz, 
   input [7:0] up,
   input [7:0] down,
@@ -32,7 +32,8 @@ module main(
   output [3:0] elevator_statue,
   output reg [2:0] current_floor,
   input force_open,
-  input force_close
+  input force_close,
+  output accCond, decCond, closeCond, openCond, timeoutCond
 
   );
   localparam OPENING_STATE   = 3'h0,
@@ -57,7 +58,8 @@ module main(
   reg [31:0] duetime;
   reg [1:0] direction;
   wire [1:0] nextDirection;
-  wire accCond, decCond, closeCond, openCond;
+  wire isStopping;
+  wire accCond, decCond, closeCond, openCond, timeoutCond;
   wire [2:0] next_floor;
   wire [31:0] unix_timestamp;
   assign elevator_statue = {direction, state[2:0]};
@@ -66,7 +68,7 @@ module main(
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
                         direction, nextDirection, accCond);
-  openCondition opc0(state, current_floor, up, down, force_open, force_close, 
+  openCondition opc0(state, current_floor, up, down, direction, force_open, force_close, 
                      openCond, closeCond);
   decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
   unix ux0(clk250Hz, unix_timestamp);
@@ -77,6 +79,7 @@ module main(
   reg [2:0] updateFloor;
   always @ (*) begin
     updateFloor = current_floor;
+    newState = state;
     case (state)
       STOP_STATE    : begin
           if(openCond) begin 

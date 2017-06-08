@@ -25,6 +25,7 @@ module openCondition(
   input [2:0] current_floor,
   input [7:0] up, 
   input [7:0] down,
+  input [1:0] direction,
   input force_open,
   input force_close, 
   output openCond, 
@@ -37,7 +38,11 @@ module openCondition(
              ACC_STATE       = 3'h4,
              ONGOING_STATE   = 3'h5,
              DEC_STATE       = 3'h6;
+  parameter D_UP   = 1'b0,
+            D_DOWN = 1'b1;
   assign openCond = (state==OPENED_STATE || state==STOP_STATE || state==CLOSING_STATE)  
-                    && (force_open | up[current_floor]);
+                    && (force_open | (up[current_floor]&~direction[D_DOWN])
+                                   | (down[current_floor]&~direction[D_UP]));
+
   assign closeCond = (state==OPENED_STATE) && force_close;
 endmodule
