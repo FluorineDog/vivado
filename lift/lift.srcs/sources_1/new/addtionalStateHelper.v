@@ -26,6 +26,7 @@ module addtionalStateHelper(
   input [7:0] down,
   input [7:0] inner_button,
   input [3:0] current_floor,
+  output [3:0] next_floor,
   input isStoping,
   output reg [7:0] up_enabled,
   output reg [7:0] down_enabled,
@@ -45,7 +46,6 @@ module addtionalStateHelper(
     down_enabled = 0;
     direction = DIRECT_UP;
   end
-
   assign up_request = 
     ((up_enabled | down_enabled | inner_button_enabled) 
       >> (current_floor + 0)) != 8'b0;
@@ -54,6 +54,9 @@ module addtionalStateHelper(
       >> (7 - current_floor)) != 8'b0;
   assign nextDirection[D_UP]   = (direction[D_UP]||!down_request) && up_request;
   assign nextDirection[D_DOWN] = (direction[D_DOWN]||!up_request) && down_request; 
+  assign next_floor = (direction[D_DOWN])? current_floor - 1:
+                      (direction[D_UP])  ? current_floor + 1: current_floor;
+
   always @ (posedge clk250Hz) begin 
     up_enabled <= ((up & ~(1<<7)) | up_enabled) & ~((direction[D_UP])? floor_mask : 8'b0);
     down_enabled <= ((down & ~1) | down_enabled) & ~((direction[D_DOWN])? floor_mask : 8'b0);

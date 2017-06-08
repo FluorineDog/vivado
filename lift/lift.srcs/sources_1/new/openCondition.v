@@ -21,6 +21,6 @@
 
 
 module openCondition(
-
-    );
+  
+  );
 endmodule
