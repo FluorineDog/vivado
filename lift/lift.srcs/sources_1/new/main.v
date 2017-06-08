@@ -56,15 +56,19 @@ module main(
   reg [31:0] unixTime;
   reg [31:0] delay;
   reg [31:0] duetime;
-  reg direction;
+  reg [1:0] direction;
+  wire [1:0] nextDirection;
   assign elevator_statue = {direction, state[2:0]};
   assign isStopping = state <= CLOSING_STATE;
-  additionalStateHelper(clk250Hz, up, down, inner_button, current_floor, isStopping, 
-                        up_enabled, down_enabled, inner_button_enabled, direction);
+  assign isDirectionChangable = (state == CLOSING_STATE) || (state == STOP_STATE);
+  additionalStateHelper(clk250Hz, up, down, inner_button, current_floor, isStopping,
+                        up_enabled, down_enabled, inner_button_enabled, 
+                        direction, nextDirection);
   initial begin
     state = STOP_STATE;
     unixTime = 0;
   end
+  assign openCond = (state==CLOSING_STATE) || 
   always @ (*) begin
     case (state)
       STOP_STATE    : begin
@@ -114,7 +118,7 @@ module main(
           delay = STOP_DELAY;
        end
       default       : begin
-          newState = STOPk_STATE;
+          newState = STOP_STATE;
         end
     endcase
   end
