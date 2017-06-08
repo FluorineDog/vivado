@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="addtiStateHelper_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="addtiStateHelper_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="1365276212fs"></ZoomEndTime>
+      <Cursor1Time time="105000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="124"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject type="logic" fp_name="/addtiStateHelper_tb/clk250Hz">
+      <obj_property name="ElementShortName">clk250Hz</obj_property>
+      <obj_property name="ObjectShortName">clk250Hz</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/up">
+      <obj_property name="ElementShortName">up[7:0]</obj_property>
+      <obj_property name="ObjectShortName">up[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/down">
+      <obj_property name="ElementShortName">down[7:0]</obj_property>
+      <obj_property name="ObjectShortName">down[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/inner_button">
+      <obj_property name="ElementShortName">inner_button[7:0]</obj_property>
+      <obj_property name="ObjectShortName">inner_button[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/current_floor">
+      <obj_property name="ElementShortName">current_floor[3:0]</obj_property>
+      <obj_property name="ObjectShortName">current_floor[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/addtiStateHelper_tb/isStopping">
+      <obj_property name="ElementShortName">isStopping</obj_property>
+      <obj_property name="ObjectShortName">isStopping</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/direction">
+      <obj_property name="ElementShortName">direction[1:0]</obj_property>
+      <obj_property name="ObjectShortName">direction[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/next_floor">
+      <obj_property name="ElementShortName">next_floor[3:0]</obj_property>
+      <obj_property name="ObjectShortName">next_floor[3:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/up_enabled">
+      <obj_property name="ElementShortName">up_enabled[7:0]</obj_property>
+      <obj_property name="ObjectShortName">up_enabled[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/down_enabled">
+      <obj_property name="ElementShortName">down_enabled[7:0]</obj_property>
+      <obj_property name="ObjectShortName">down_enabled[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/inner_button_enabled">
+      <obj_property name="ElementShortName">inner_button_enabled[7:0]</obj_property>
+      <obj_property name="ObjectShortName">inner_button_enabled[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/addtiStateHelper_tb/nextDirection">
+      <obj_property name="ElementShortName">nextDirection[1:0]</obj_property>
+      <obj_property name="ObjectShortName">nextDirection[1:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/addtiStateHelper_tb/D_UP">
+      <obj_property name="ElementShortName">D_UP</obj_property>
+      <obj_property name="ObjectShortName">D_UP</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/addtiStateHelper_tb/D_DOWN">
+      <obj_property name="ElementShortName">D_DOWN</obj_property>
+      <obj_property name="ObjectShortName">D_DOWN</obj_property>
+   </wvobject>
+</wave_config>

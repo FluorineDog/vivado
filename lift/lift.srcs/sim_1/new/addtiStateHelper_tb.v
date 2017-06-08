@@ -26,10 +26,10 @@ module addtiStateHelper_tb(
   reg [7:0] up;
   reg [7:0] down;
   reg [7:0] inner_button;
-  reg [3:0] current_floor;
+  reg [2:0] current_floor;
   reg isStopping;
   reg [1:0] direction;
-  wire [3:0] next_floor;
+  wire [2:0] next_floor;
   wire [7:0] up_enabled;
   wire [7:0] down_enabled;
   wire [7:0] inner_button_enabled;
@@ -49,12 +49,13 @@ module addtiStateHelper_tb(
     isStopping = 1;
     direction = 0;
     #100
-          // 76543210
-    up =   8'b00100010;
-    down = 8'b01101000;
+    up =   8'b0010_0010;
+    down = 8'b0110_1000;
+    inner_button = 8'b0100_0000;
     #50 
     up = 0;
     down = 0;
+    inner_button = 0;
     direction = nextDirection;
     isStopping = 0;
     #20

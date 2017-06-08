@@ -25,14 +25,15 @@ module addtionalStateHelper(
   input [7:0] up,
   input [7:0] down,
   input [7:0] inner_button,
-  input [3:0] current_floor,
-  output [3:0] next_floor,
+  input [2:0] current_floor,
+  output [2:0] next_floor,
   input isStoping,
   output reg [7:0] up_enabled,
   output reg [7:0] down_enabled,
   output reg [7:0] inner_button_enabled,
   input [1:0] direction,
-  output [1:0] nextDirection
+  output [1:0] nextDirection,
+  output
   );
   wire up_request;
   wire down_request;
