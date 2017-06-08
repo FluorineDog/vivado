@@ -29,7 +29,9 @@ module main(
   output [7:0] down_enabled,
   input [7:0] inner_button,
   output [7:0] inner_button_enabled,
-  output [3:0] elevator_statue,
+
+  output reg [1:0] direction,
+  output reg [2:0] state,
   output reg [2:0] current_floor,
   input force_open,
   input force_close,
@@ -44,25 +46,24 @@ module main(
              ONGOING_STATE   = 3'h5,
              DEC_STATE       = 3'h6;
 
-  parameter  OPEN_TIME         = 3,
+  parameter  OPEN_TIME         = 2,
              OPENED_DELAY      = 6,
-             CLOSE_TIME        = 3,
-             ACC_TIME          = 3,
-             DEC_TIME          = 3,
-             CHECKFLOOR_TIME   = 3,
-             TRANSFLOOR_TIME   = 3,
-             STOP_DELAY        = 0;
+             CLOSE_TIME        = 2,
+             ACC_TIME          = 2,
+             DEC_TIME          = 2,
+             CHECKFLOOR_TIME   = 4,
+             TRANSFLOOR_TIME   = 5,
+             STOP_DELAY        = 1;
   reg [2:0] newState;
-  reg [2:0] state;
+//  reg [2:0] state;
   reg [31:0] delay;
   reg [31:0] duetime;
-  reg [1:0] direction;
+//  reg [1:0] direction;
   wire [1:0] nextDirection;
   wire isStopping;
   //wire accCond, decCond, closeCond, openCond, timeoutCond;
   wire [2:0] next_floor;
   wire [31:0] unix_timestamp;
-  assign elevator_statue = {direction, state[2:0]};
   assign isStopping = state <= STOP_STATE;
   addtionalStateHelper ash0(clk250Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
@@ -126,19 +127,19 @@ module main(
         end
       ONGOING_STATE : begin
           if(decCond) begin
-            updateFloor = next_floor;
             newState = DEC_STATE;
             delay = DEC_TIME;
           end
           else begin
+            updateFloor = next_floor;
             newState = ONGOING_STATE;
             delay = TRANSFLOOR_TIME;
           end
         end
       DEC_STATE     : begin
           updateFloor = next_floor;
-          newState = STOP_STATE;
-          delay = STOP_DELAY;
+          newState = OPENING_STATE;
+          delay = OPEN_TIME;
        end
       default       : begin
           newState = STOP_STATE;

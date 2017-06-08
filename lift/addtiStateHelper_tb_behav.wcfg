@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="57053941909fs"></ZoomEndTime>
-      <Cursor1Time time="6729333000fs"></Cursor1Time>
+      <ZoomStartTime time="78617333334fs"></ZoomStartTime>
+      <ZoomEndTime time="142317333335fs"></ZoomEndTime>
+      <Cursor1Time time="89234000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="108"></NameColumnWidth>
+      <NameColumnWidth column_width="122"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="19" />
+   <WVObjectSize size="20" />
    <wvobject type="logic" fp_name="/mian_tb/clk250Hz">
       <obj_property name="ElementShortName">clk250Hz</obj_property>
       <obj_property name="ObjectShortName">clk250Hz</obj_property>
@@ -32,25 +32,9 @@
       <obj_property name="ElementShortName">down[7:0]</obj_property>
       <obj_property name="ObjectShortName">down[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/mian_tb/down_enabled">
-      <obj_property name="ElementShortName">down_enabled[7:0]</obj_property>
-      <obj_property name="ObjectShortName">down_enabled[7:0]</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/mian_tb/inner_button">
       <obj_property name="ElementShortName">inner_button[7:0]</obj_property>
       <obj_property name="ObjectShortName">inner_button[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/mian_tb/inner_button_enabled">
-      <obj_property name="ElementShortName">inner_button_enabled[7:0]</obj_property>
-      <obj_property name="ObjectShortName">inner_button_enabled[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/mian_tb/elevator_statue">
-      <obj_property name="ElementShortName">elevator_statue[3:0]</obj_property>
-      <obj_property name="ObjectShortName">elevator_statue[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/mian_tb/current_floor">
-      <obj_property name="ElementShortName">current_floor[2:0]</obj_property>
-      <obj_property name="ObjectShortName">current_floor[2:0]</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/mian_tb/force_open">
       <obj_property name="ElementShortName">force_open</obj_property>
@@ -80,6 +64,22 @@
       <obj_property name="ElementShortName">timeoutCond</obj_property>
       <obj_property name="ObjectShortName">timeoutCond</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/up_enabled">
+      <obj_property name="ElementShortName">up_enabled[7:0]</obj_property>
+      <obj_property name="ObjectShortName">up_enabled[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/down_enabled">
+      <obj_property name="ElementShortName">down_enabled[7:0]</obj_property>
+      <obj_property name="ObjectShortName">down_enabled[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/inner_button_enabled">
+      <obj_property name="ElementShortName">inner_button_enabled[7:0]</obj_property>
+      <obj_property name="ObjectShortName">inner_button_enabled[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/current_floor">
+      <obj_property name="ElementShortName">current_floor[2:0]</obj_property>
+      <obj_property name="ObjectShortName">current_floor[2:0]</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/mian_tb/main0/ux0/timestamp">
       <obj_property name="ElementShortName">timestamp[31:0]</obj_property>
       <obj_property name="ObjectShortName">timestamp[31:0]</obj_property>
@@ -95,5 +95,9 @@
    <wvobject type="array" fp_name="/mian_tb/main0/updateFloor">
       <obj_property name="ElementShortName">updateFloor[2:0]</obj_property>
       <obj_property name="ObjectShortName">updateFloor[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/main0/direction">
+      <obj_property name="ElementShortName">direction[1:0]</obj_property>
+      <obj_property name="ObjectShortName">direction[1:0]</obj_property>
    </wvobject>
 </wave_config>
