@@ -12,14 +12,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="894572234124fs"></ZoomEndTime>
+      <ZoomEndTime time="6880592822039fs"></ZoomEndTime>
       <Cursor1Time time="11440985000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="114"></NameColumnWidth>
+      <NameColumnWidth column_width="110"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="22" />
+   <WVObjectSize size="23" />
    <wvobject type="logic" fp_name="/mian_tb/clk250Hz">
       <obj_property name="ElementShortName">clk250Hz</obj_property>
       <obj_property name="ObjectShortName">clk250Hz</obj_property>
@@ -107,5 +107,9 @@
    <wvobject type="logic" fp_name="/mian_tb/main0/RST_status">
       <obj_property name="ElementShortName">RST_status</obj_property>
       <obj_property name="ObjectShortName">RST_status</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/mian_tb/main0/remaining_time">
+      <obj_property name="ElementShortName">remaining_time[3:0]</obj_property>
+      <obj_property name="ObjectShortName">remaining_time[3:0]</obj_property>
    </wvobject>
 </wave_config>

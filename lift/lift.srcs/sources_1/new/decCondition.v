@@ -40,7 +40,7 @@ module decCondition(
     end 
     else if(direction[D_DOWN]) begin
       decCond = (down_enabled[next_floor] |inner_button_enabled[next_floor])
-        || (up_enabled|inner_button_enabled|down_enabled)>>(8-next_floor) == 0;
+        || (up_enabled|inner_button_enabled|down_enabled)<<(8-next_floor) == 0;
     end
     else 
       decCond = 0;

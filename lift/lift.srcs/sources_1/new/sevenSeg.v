@@ -22,7 +22,10 @@
 
 module sevenSeg(
   input [2:0] lift_floor, 
+  input [2:0] switch_floor, 
   input [3:0] timer,     
+  input [2:0] state,
+  input [1:0] direction, 
   input clk,      // require : 1ms-4ms period
   output reg [7:0] AN,
   output reg [7:0] seg_data
@@ -30,11 +33,15 @@ module sevenSeg(
   reg [2:0] choose;
   wire [7:0] lift_floor_seg;
   wire [7:0] timer_seg;
+  wire [7:0] gravity_seg;
+  wire [7:0] switch_floor_seg;
+
   integer i;  
 
-  sevenSegDigit ssd0({1'b0, lift_floor[2:0]}, lift_floor_seg);
+  sevenSegFloor ssd0(lift_floor, lift_floor_seg);
   sevenSegDigit ssd1(timer, timer_seg);
-
+  sevenSegGravity ssg2(state, direction, gravity_seg);
+  sevenSegFloor ssd3(switch_floor, switch_floor_seg);
   initial begin
     choose = 0;
   end
@@ -44,9 +51,11 @@ module sevenSeg(
       AN[i]=(choose!=i);
     end
     case(choose)
-      'h0:     seg_data = lift_floor_seg;
-      'h7:     seg_data = timer_seg;
-      default  seg_data = 8'b11111101;
+      'h7:      seg_data = switch_floor_seg;
+      'h4:      seg_data = gravity_seg; 
+      'h2:      seg_data = lift_floor_seg;
+      'h0:      seg_data = timer_seg;
+      default   seg_data = 8'b11111101;
     endcase
   end
   

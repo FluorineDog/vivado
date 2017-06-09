@@ -35,7 +35,7 @@ module main(
   output reg [2:0] current_floor,
   input force_open,
   input force_close,
-  output accCond, decCond, closeCond, openCond, timeoutCond,
+//  output accCond, decCond, closeCond, openCond, timeoutCond,
   output [3:0] remaining_time
   );
   localparam OPENING_STATE   = 3'h0,

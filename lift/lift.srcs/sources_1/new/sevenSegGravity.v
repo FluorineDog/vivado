@@ -30,7 +30,7 @@ module sevenSegGravity(
              CLOSING_STATE   = 3'h2,
              STOP_STATE      = 3'h3,
              ACC_STATE       = 3'h4,
-             ONGOING_STATE   = 3'h5
+             ONGOING_STATE   = 3'h5,
              DEC_STATE       = 3'h6;
   parameter  D_UP   = 1'b0,
              D_DOWN = 1'b1;
@@ -49,7 +49,7 @@ module sevenSegGravity(
       DEC_STATE: 
           seg_data = (direction[D_UP]) ? 8'b1011_1001:8'b1101_0101;
       default:
-          seg_data = 8'b1111_1110
+          seg_data = 8'b1111_1110;
     endcase 
   end
 endmodule

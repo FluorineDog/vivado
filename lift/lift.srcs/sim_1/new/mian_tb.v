@@ -35,10 +35,12 @@ module mian_tb(
   wire [2:0] current_floor;
   reg force_open;
   reg force_close;
-  wire accCond, decCond, closeCond, openCond, timeoutCond;
+  // wire accCond, decCond, closeCond, openCond;
+  wire timeoutCond;
   main main0(RST, clk250Hz, up, down, up_enabled, down_enabled, inner_button, inner_button_enabled,
             direction, state, current_floor, force_open, force_close, 
-            accCond, decCond, closeCond, openCond, timeoutCond);
+            // accCond, decCond, closeCond, openCond, 
+            timeoutCond);
   always #2 clk250Hz = ~clk250Hz;
   initial begin
     up           = 0;
