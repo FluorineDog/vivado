@@ -22,6 +22,7 @@
 
 module mian_tb(
   );
+  reg RST = 1;
   reg clk250Hz = 0; 
   reg [7:0] up;
   reg [7:0] down;
@@ -35,7 +36,7 @@ module mian_tb(
   reg force_open;
   reg force_close;
   wire accCond, decCond, closeCond, openCond, timeoutCond;
-  main main0(clk250Hz, up, down, up_enabled, down_enabled, inner_button, inner_button_enabled,
+  main main0(RST, clk250Hz, up, down, up_enabled, down_enabled, inner_button, inner_button_enabled,
             direction, state, current_floor, force_open, force_close, 
             accCond, decCond, closeCond, openCond, timeoutCond);
   always #2 clk250Hz = ~clk250Hz;
@@ -61,8 +62,10 @@ module mian_tb(
     force_close = 0;
     #10000
     force_open = 0;
-    #180000;
-    
-
+    #18000;
+    RST = 1;
+    #10;
+    RST = 1;
+    #200000;
   end
 endmodule

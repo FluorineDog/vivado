@@ -21,6 +21,7 @@
 
 
 module addtionalStateHelper(
+  input RST_status,
   input clk250Hz,
   input [7:0] up,
   input [7:0] down,
@@ -58,8 +59,15 @@ module addtionalStateHelper(
                       (direction[D_UP])  ? current_floor + 1: current_floor;
 
   always @ (posedge clk250Hz) begin 
-    up_enabled <= ((up & ~(1<<7)) | up_enabled) & ~((!direction[D_DOWN])? floor_mask : 8'b0);
-    down_enabled <= ((down & ~1) | down_enabled) & ~((!direction[D_UP])? floor_mask : 8'b0);
-    inner_button_enabled <= (inner_button | inner_button_enabled) & ~floor_mask; 
+    if(RST_status) begin 
+      up_enabled <= 0;
+      down_enabled <= 0;
+      inner_button_enabled <= 0;
+    end
+    else begin 
+      up_enabled <= ((up & ~(1<<7)) | up_enabled) & ~((!direction[D_DOWN])? floor_mask : 8'b0);
+      down_enabled <= ((down & ~1) | down_enabled) & ~((!direction[D_UP])? floor_mask : 8'b0);
+      inner_button_enabled <= (inner_button | inner_button_enabled) & ~floor_mask; 
+    end
   end
 endmodule

@@ -21,6 +21,7 @@
 
 
 module openCondition(
+  input RST_status,
   input [2:0] state,
   input [2:0] current_floor,
   input [7:0] up, 
@@ -40,9 +41,9 @@ module openCondition(
              DEC_STATE       = 3'h6;
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
-  assign openCond = (state==OPENED_STATE || state==STOP_STATE || state==CLOSING_STATE)  
+  assign openCond = !RST_status &&( (state==OPENED_STATE || state==STOP_STATE || state==CLOSING_STATE)  
                     && (force_open | (up[current_floor]&~direction[D_DOWN])
-                                   | (down[current_floor]&~direction[D_UP]));
+                                   | (down[current_floor]&~direction[D_UP])));
 
-  assign closeCond = (state==OPENED_STATE) && force_close;
+  assign closeCond = !RST_status && ((state==OPENED_STATE) && force_close);
 endmodule

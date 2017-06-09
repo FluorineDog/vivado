@@ -21,7 +21,7 @@
 
 
 module main(
-//  input RST,
+  input RST,
   input clk250Hz, 
   input [7:0] up,
   input [7:0] down,
@@ -55,6 +55,7 @@ module main(
              TRANSFLOOR_TIME   = 5,
              STOP_DELAY        = 1;
   reg [2:0] newState;
+  reg RST_status;
 //  reg [2:0] state;
   reg [31:0] delay;
   reg [31:0] duetime;
@@ -65,16 +66,17 @@ module main(
   wire [2:0] next_floor;
   wire [31:0] unix_timestamp;
   assign isStopping = state <= STOP_STATE;
-  addtionalStateHelper ash0(clk250Hz, up, down, inner_button, 
+  addtionalStateHelper ash0(RST_status, clk250Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
                         direction, nextDirection, accCond);
-  openCondition opc0(state, current_floor, up, down, direction, force_open, force_close, 
+  openCondition opc0(RST_status, state, current_floor, up, down, direction, force_open, force_close, 
                      openCond, closeCond);
-  decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
+  decCondition decC0(RST_status, next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
   unix ux0(clk250Hz, unix_timestamp);
   assign timeoutCond = duetime <= unix_timestamp;
   initial begin
+    RST_status = 0;
     state = STOP_STATE;
     direction = 0;
     duetime = 0;
@@ -154,8 +156,19 @@ module main(
       end
     end
   end
+  always @ (posedge clk250Hz or negedge RST) begin
+    if(!RST) begin 
+      RST_status <= 1;
+    end
+    else begin 
+      RST_status <= RST_status && !(state == STOP_STATE);
+    end
+  end
   always @ (posedge clk250Hz) begin
-    direction <= nextDirection;
+    if(isStopping)
+        direction <= nextDirection;
+    else
+        direction <= direction;
     if(timeoutCond || openCond || closeCond) begin
       state <= newState;
       current_floor <= updateFloor;
