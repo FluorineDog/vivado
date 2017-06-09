@@ -35,8 +35,8 @@ module main(
   output reg [2:0] current_floor,
   input force_open,
   input force_close,
-  output accCond, decCond, closeCond, openCond, timeoutCond
-
+  output accCond, decCond, closeCond, openCond, timeoutCond,
+  output [3:0] remaining_time
   );
   localparam OPENING_STATE   = 3'h0,
              OPENED_STATE    = 3'h1,
@@ -62,9 +62,10 @@ module main(
 //  reg [1:0] direction;
   wire [1:0] nextDirection;
   wire isStopping;
-  //wire accCond, decCond, closeCond, openCond, timeoutCond;
+  wire accCond, decCond, closeCond, openCond, timeoutCond;
   wire [2:0] next_floor;
   wire [31:0] unix_timestamp;
+  assign remaining_time = (duetime > unix_timestamp)? duetime - unix_timestamp : 0;
   assign isStopping = state <= STOP_STATE;
   addtionalStateHelper ash0(RST_status, clk250Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,

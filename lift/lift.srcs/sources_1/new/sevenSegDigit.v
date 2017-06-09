@@ -24,8 +24,8 @@ module sevenSegDigit(
   input [3:0] digit, 
   output reg [7:0] seg_data
   );
-  always @(digit)
-  case (digit)
+  always @(digit) begin 
+    case (digit)
       4'h0: seg_data = 8'b00000011;
       4'h1: seg_data = 8'b10011111;
       4'h2: seg_data = 8'b00100101;
@@ -42,7 +42,8 @@ module sevenSegDigit(
       4'hd: seg_data = 8'b10000101;
       4'he: seg_data = 8'b01100001;
       4'hf: seg_data = 8'b01110001;
-   default: 
+      default: 
             seg_data = 8'b11111101;
-  endcase
+    endcase
+  end
 endmodule
