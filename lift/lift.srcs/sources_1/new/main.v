@@ -82,69 +82,77 @@ module main(
     delay = 0;
   end
   reg [2:0] updateFloor;
-  always @ (*) begin
+  always @ (posedge clk250Hz) begin
     updateFloor = current_floor;
     newState = state;
     delay = 0;
-    case (state)
-      STOP_STATE    : begin
-          if(openCond) begin 
-            newState = OPENING_STATE;
-            delay = OPEN_TIME;
+    if(timeoutCond) begin 
+      case (state)
+        STOP_STATE    : begin
+            if(accCond) begin
+              newState = ACC_STATE;
+              delay = ACC_TIME;
+            end
           end
-          else if(accCond) begin
-            newState = ACC_STATE;
-            delay = ACC_TIME;
-          end
-        end
-      OPENING_STATE : begin
-          newState = OPENED_STATE;
-          delay = OPENED_DELAY;
-        end
-      OPENED_STATE  : begin
-          if(openCond) begin 
-            newState = OPENED_DELAY;
+        OPENING_STATE : begin
+            newState = OPENED_STATE;
             delay = OPENED_DELAY;
           end
-          else begin
+        OPENED_STATE  : begin
             newState = CLOSING_STATE;
             delay = CLOSE_TIME;
-          end 
-        end
-      CLOSING_STATE : begin
-          if(openCond) begin
-            newState = OPENING_STATE;
-            delay = unix_timestamp + OPEN_TIME - duetime + 1;
           end
-          else begin
+        CLOSING_STATE : begin
             newState = STOP_STATE;
             delay = STOP_DELAY;
           end
-        end
-      ACC_STATE     : begin
-          newState = ONGOING_STATE;
-          delay = CHECKFLOOR_TIME;
-        end
-      ONGOING_STATE : begin
-          if(decCond) begin
-            newState = DEC_STATE;
-            delay = DEC_TIME;
-          end
-          else begin
-            updateFloor = next_floor;
+        ACC_STATE     : begin
             newState = ONGOING_STATE;
-            delay = TRANSFLOOR_TIME;
+            delay = CHECKFLOOR_TIME;
           end
-        end
-      DEC_STATE     : begin
-          updateFloor = next_floor;
+        ONGOING_STATE : begin
+            if(decCond) begin
+              newState = DEC_STATE;
+              delay = DEC_TIME;
+            end
+            else begin
+              updateFloor = next_floor;
+              newState = ONGOING_STATE;
+              delay = TRANSFLOOR_TIME;
+            end
+          end
+        DEC_STATE     : begin
+            updateFloor = next_floor;
+            newState = OPENING_STATE;
+            delay = OPEN_TIME;
+         end
+        default       : begin
+            newState = STOP_STATE;
+          end
+      endcase
+    end
+    else if(openCond) begin 
+      case(state)
+        STOP_STATE: begin
           newState = OPENING_STATE;
           delay = OPEN_TIME;
-       end
-      default       : begin
-          newState = STOP_STATE;
+        end  
+        OPENED_STATE  : begin
+          newState = OPENED_STATE;
+          delay = OPENED_DELAY;
         end
-    endcase
+        CLOSING_STATE : begin
+          newState = OPENING_STATE;
+          delay = unix_timestamp + OPEN_TIME - duetime + 1;
+        end
+      endcase 
+    end
+    else if (closeCond) begin
+      if(state == OPENED_STATE) begin 
+        newState = CLOSING_STATE;
+        delay = CLOSE_TIME;
+      end
+    end
   end
   always @ (posedge clk250Hz) begin
     direction <= nextDirection;

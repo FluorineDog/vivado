@@ -57,9 +57,9 @@ module mian_tb(
     force_close = 1;
     #100
     force_open = 1;
-    #300;
+    #10;
     force_close = 0;
-    #1000
+    #10000
     force_open = 0;
     #180000;
     
