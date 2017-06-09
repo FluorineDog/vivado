@@ -49,17 +49,17 @@ module mian_tb(
     force_open   = 0;
     force_close  = 0;
     #10000;
-    up =   8'b0010_0010;
-    down = 8'b0110_1000;
-    inner_button = 8'b0100_0000;
+    up =   8'b1111_1111;
+    down = 8'b1111_1111;
+    inner_button = 8'b1111_1111;
     #10;
     up           = 0;
     down         = 0;
     inner_button = 0;
     #10000;
-    force_close = 1;
+    force_close = 0;
     #100
-    force_open = 1;
+    force_open = 0;
     #10;
     force_close = 0;
     #10000
