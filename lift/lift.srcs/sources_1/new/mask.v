@@ -37,8 +37,8 @@ module mask(
   output [7:0] AN,
   output [7:0] seg_data
   );
-  wire clk250Hz;
-  clockWrapper clkwp0(clk100MHz, clk250Hz);
+  wire clk500Hz;
+  clockWrapper clkwp0(clk100MHz, clk500Hz);
   parameter  D_UP   = 1'b0,
              D_DOWN = 1'b1;
   wire [1:0] direction;
@@ -50,8 +50,8 @@ module mask(
   wire [7:0] up_enabled, down_enabled;
   wire [3:0] remaining_time;
   sevenSeg sg0(current_floor, floor_switch, remaining_time, state, direction, 
-              clk250Hz, AN, seg_data);
-  main main0(RST, clk250Hz, up, down, up_enabled, down_enabled, inner_button,
+              clk500Hz, AN, seg_data);
+  main main0(RST, clk500Hz, up, down, up_enabled, down_enabled, inner_button,
              inner_button_enabled,
              direction, state, current_floor, force_open, force_close, 
              remaining_time);

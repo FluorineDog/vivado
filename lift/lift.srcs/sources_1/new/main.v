@@ -22,7 +22,7 @@
 
 module main(
   input RST,
-  input clk250Hz, 
+  input clk500Hz, 
   input [7:0] up,
   input [7:0] down,
   output [7:0] up_enabled,
@@ -57,7 +57,6 @@ module main(
   reg [2:0] newState;
   reg RST_status;
 //  reg [2:0] state;
-  reg [31:0] delay;
   reg [31:0] duetime;
 //  reg [1:0] direction;
   wire [1:0] nextDirection;
@@ -65,17 +64,18 @@ module main(
   wire accCond, decCond, closeCond, openCond, timeoutCond;
   wire [2:0] next_floor;
   wire [31:0] unix_timestamp;
-  assign remaining_time = (duetime > unix_timestamp)? duetime - unix_timestamp : 0;
   assign isStopping = state <= STOP_STATE;
-  addtionalStateHelper ash0(RST_status, clk250Hz, up, down, inner_button, 
+  addtionalStateHelper ash0(RST_status, clk500Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
                         direction, nextDirection, accCond);
   openCondition opc0(RST_status, state, current_floor, up, down, direction, force_open, force_close, 
                      openCond, closeCond);
-  decCondition decC0(RST_status, next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
-  unix ux0(clk250Hz, unix_timestamp);
-  assign timeoutCond = duetime <= unix_timestamp;
+  decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
+  unix ux0(clk500Hz, unix_timestamp);
+  assign timeoutCond = unix_timestamp >= duetime;
+  assign remaining_time = (timeoutCond)? 0:(duetime - unix_timestamp);
+
   initial begin
     RST_status = 0;
     state = STOP_STATE;
@@ -85,79 +85,78 @@ module main(
     delay = 0;
   end
   reg [2:0] updateFloor;
-  always @ (posedge clk250Hz) begin
-    updateFloor = current_floor;
-    newState = state;
-    delay = 0;
+
+  always @ (posedge clk500Hz) begin
     if(timeoutCond) begin 
       case (state)
         STOP_STATE    : begin
             if(accCond) begin
-              newState = ACC_STATE;
-              delay = ACC_TIME;
+              newState <= ACC_STATE;
+              duetime <= unix_timestamp + ACC_TIME;
             end
           end
         OPENING_STATE : begin
-            newState = OPENED_STATE;
-            delay = OPENED_DELAY;
+            newState <= OPENED_STATE;
+            duetime <= unix_timestamp + OPENED_DELAY;
           end
         OPENED_STATE  : begin
-            newState = CLOSING_STATE;
-            delay = CLOSE_TIME;
+            newState <= CLOSING_STATE;
+            duetime <= unix_timestamp + CLOSE_TIME;
           end
         CLOSING_STATE : begin
-            newState = STOP_STATE;
-            delay = STOP_DELAY;
+            newState <= STOP_STATE;
+            duetime <= unix_timestamp + STOP_DELAY;
           end
         ACC_STATE     : begin
-            newState = ONGOING_STATE;
-            delay = CHECKFLOOR_TIME;
+            newState <= ONGOING_STATE;
+            duetime <= unix_timestamp + CHECKFLOOR_TIME;
           end
         ONGOING_STATE : begin
             if(decCond) begin
-              newState = DEC_STATE;
-              delay = DEC_TIME;
+              newState <= DEC_STATE;
+              duetime <= unix_timestamp + DEC_TIME;
             end
             else begin
-              updateFloor = next_floor;
-              newState = ONGOING_STATE;
-              delay = TRANSFLOOR_TIME;
+              updateFloor <= next_floor;
+              newState <= ONGOING_STATE;
+              duetime <= unix_timestamp + TRANSFLOOR_TIME;
             end
           end
         DEC_STATE     : begin
-            updateFloor = next_floor;
-            newState = OPENING_STATE;
-            delay = OPEN_TIME;
+            updateFloor <= next_floor;
+            newState <= OPENING_STATE;
+            duetime <= unix_timestamp + OPEN_TIME;
          end
         default       : begin
-            newState = STOP_STATE;
+            newState <= STOP_STATE;
           end
       endcase
     end
     else if(openCond) begin 
       case(state)
         STOP_STATE: begin
-          newState = OPENING_STATE;
-          delay = OPEN_TIME;
+          newState <= OPENING_STATE;
+          duetime <= unix_timestamp + OPEN_TIME;
         end  
         OPENED_STATE  : begin
-          newState = OPENED_STATE;
-          delay = OPENED_DELAY;
+          newState <= OPENED_STATE;
+          duetime <= unix_timestamp + OPENED_DELAY;
         end
         CLOSING_STATE : begin
-          newState = OPENING_STATE;
-          delay = unix_timestamp + OPEN_TIME - duetime + 1;
+          newState <= OPENING_STATE;
+          duetime <= unix_timestamp + unix_timestamp + OPEN_TIME - duetime + 1;
         end
       endcase 
     end
     else if (closeCond) begin
       if(state == OPENED_STATE) begin 
-        newState = CLOSING_STATE;
-        delay = CLOSE_TIME;
+        newState <= CLOSING_STATE;
+        duetime <= unix_timestamp + CLOSE_TIME;
       end
     end
   end
-  always @ (posedge clk250Hz or negedge RST) begin
+
+  always @ (posedge clk500Hz or negedge RST) begin
     if(!RST) begin 
       RST_status <= 1;
     end
@@ -165,20 +164,22 @@ module main(
       RST_status <= RST_status && !(state == STOP_STATE);
     end
   end
-  always @ (posedge clk250Hz) begin
-    if(isStopping)
-        direction <= nextDirection;
-    else
-        direction <= direction;
-    if(timeoutCond || openCond || closeCond) begin
-      state <= newState;
-      current_floor <= updateFloor;
-      duetime <= unix_timestamp + delay;
-    end
-    else begin 
-      state <= state;
-      current_floor <= current_floor;
-      duetime <= duetime;
-    end
-  end
+//  always @ (posedge clk500Hz) begin
+//    if(isStopping) begin
+//      direction <= nextDirection;
+//    end
+//    else begin
+//      direction <= direction;
+//      end
+//    if(timeoutCond || openCond || closeCond) begin
+//      state <= newState;
+//      current_floor <= updateFloor;
+//      duetime <= unix_timestamp + delay;
+//    end
+//    else begin 
+//      state <= state;
+//      current_floor <= current_floor;
+//      duetime <= duetime;
+//    end
+//  end
 endmodule

@@ -21,22 +21,21 @@
 
 
 module unix(
-  input clk250Hz, 
+  input clk500Hz, 
   output reg [31:0] timestamp
   );
-  reg [7:0] counter;
+  reg [31:0] counter;
   initial begin
-    timestamp = 0;
-    counter = 30;
+    timestamp = 100;
+    counter = 3;
   end
-  always @ (posedge clk250Hz)  begin
-    if(counter>=250) begin
+  always @ (posedge clk500Hz)  begin
+    if(counter >= 500) begin
       counter <= 0;
       timestamp <= timestamp + 1;
     end
     else begin
       counter <= counter + 1;
-      timestamp <= timestamp;
     end 
       
   end

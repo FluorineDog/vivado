@@ -22,14 +22,14 @@
 
 module clockWrapper(
   input clk100MHz,  
-  output clk250Hz
+  output clk500Hz
   );
   reg [31:0] counter;
   initial begin
     counter = 1;
   end
   always@ (posedge clk100MHz) begin
-    counter <= (counter >= 400_000) ? 0:(counter+1);
+    counter <= (counter >= 200_000) ? 0:(counter+1);
   end
-  assign clk250Hz = (counter<20000);
+  assign clk500Hz = (counter < 200_000);
 endmodule

@@ -22,7 +22,7 @@
 
 module addtionalStateHelper(
   input RST_status,
-  input clk250Hz,
+  input clk500Hz,
   input [7:0] up,
   input [7:0] down,
   input [7:0] inner_button,
@@ -58,7 +58,7 @@ module addtionalStateHelper(
   assign next_floor = (direction[D_DOWN])? current_floor - 1:
                       (direction[D_UP])  ? current_floor + 1: current_floor;
 
-  always @ (posedge clk250Hz) begin 
+  always @ (posedge clk500Hz) begin 
     if(RST_status) begin 
       up_enabled <= 0;
       down_enabled <= 0;

@@ -22,7 +22,7 @@
 
 module addtiStateHelper_tb(
   );
-  reg clk250Hz=0;
+  reg clk500Hz=0;
   reg [7:0] up;
   reg [7:0] down;
   reg [7:0] inner_button;
@@ -37,11 +37,11 @@ module addtiStateHelper_tb(
   wire accCond;
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
-  addtionalStateHelper ash0(clk250Hz, up, down, inner_button, 
+  addtionalStateHelper ash0(clk500Hz, up, down, inner_button, 
                         current_floor, next_floor, isStopping,
                         up_enabled, down_enabled, inner_button_enabled, 
                         direction, nextDirection, accCond);
-  always #5 clk250Hz = ~clk250Hz;
+  always #5 clk500Hz = ~clk500Hz;
   initial begin
     up = 0;
     down = 0;
