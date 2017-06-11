@@ -35,7 +35,8 @@ module mask(
   output up_direction_LED,
   output down_direction_LED,
   output [7:0] AN,
-  output [7:0] seg_data
+  output [7:0] seg_data,
+  output [5:0] gate_led
   );
   wire clk500Hz;
   clockWrapper clkwp0(clk100MHz, clk500Hz);
@@ -49,6 +50,7 @@ module mask(
   reg [7:0] up, down;
   wire [7:0] up_enabled, down_enabled;
   wire [3:0] remaining_time;
+  gate gt0(state, remaining_time, gate_led);
   sevenSeg sg0(current_floor, floor_switch, remaining_time, state, direction, 
               clk500Hz, AN, seg_data);
   main main0(RST, clk500Hz, up, down, up_enabled, down_enabled, inner_button,
@@ -58,8 +60,8 @@ module mask(
   integer i;
   always @(*) begin
     for(i=0;i<8;i=i+1)begin
-      up[i] = (floor_switch==i) && up_trigger;
-      down[i] = (floor_switch==i) && down_trigger;
+      up[i] = (floor_switch==i) && up_trigger && i!=7;
+      down[i] = (floor_switch==i) && down_trigger && i!=0;
       up_enabled_LED = up_enabled[floor_switch];
       down_enabled_LED = down_enabled[floor_switch];
     end

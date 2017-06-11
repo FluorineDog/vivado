@@ -46,12 +46,12 @@ module main(
              ONGOING_STATE   = 3'h5,
              DEC_STATE       = 3'h6;
 
-  parameter  OPEN_TIME         = 4,
+  parameter  OPEN_TIME         = 3,
              OPENED_DELAY      = 6,
-             CLOSE_TIME        = 4,
+             CLOSE_TIME        = 3,
              ACC_TIME          = 4,
              DEC_TIME          = 4,
-             CHECKFLOOR_TIME   = 8,
+             CHECKFLOOR_TIME   = 6,
              TRANSFLOOR_TIME   = 10,
              STOP_DELAY        = 2;
   reg RST_status;

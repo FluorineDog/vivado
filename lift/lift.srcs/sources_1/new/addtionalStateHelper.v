@@ -65,8 +65,8 @@ module addtionalStateHelper(
       inner_button_enabled <= 0;
     end
     else begin 
-      up_enabled <= ((up & ~(1<<7)) | up_enabled) & ~((!direction[D_DOWN])? floor_mask : 8'b0);
-      down_enabled <= ((down & ~1) | down_enabled) & ~((!direction[D_UP])? floor_mask : 8'b0);
+      up_enabled <= (up | up_enabled) & ~((!direction[D_DOWN])? floor_mask : 8'b0);
+      down_enabled <= (down | down_enabled) & ~((!direction[D_UP])? floor_mask : 8'b0);
       inner_button_enabled <= (inner_button | inner_button_enabled) & ~floor_mask; 
     end
   end

@@ -27,11 +27,11 @@ module unix(
   reg [31:0] counter;
   initial begin
     timestamp = 0;
-    counter = 0;
+    counter = 12;
   end
   always @ (posedge clk500Hz)  begin
     if(counter[9]) begin
-      counter <= 0;
+      counter <= 12;
       timestamp <= timestamp + 1;
     end
     else begin
