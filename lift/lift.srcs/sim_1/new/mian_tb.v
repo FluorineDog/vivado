@@ -48,10 +48,10 @@ module mian_tb(
     inner_button = 0;
     force_open   = 0;
     force_close  = 0;
-    #100;
-    up =   8'b100000000;;
-    down = 8'b1111_1111;
-    inner_button = 8'b1000_0000;
+    #10000;
+    up =   8'b0000_0000;;
+    down = 8'b1000_0000;
+    inner_button = 8'b0000_0000;
     #10;
     up           = 0;
     down         = 0;
@@ -68,6 +68,6 @@ module mian_tb(
     RST = 1;
     #10;
     RST = 1;
-    #200;
+    #200000;
   end
 endmodule

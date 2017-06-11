@@ -30,14 +30,18 @@ module decCondition(
   );
   parameter D_UP   = 1'b0,
             D_DOWN = 1'b1;
+  wire [7:0] all;
+  assign all = up_enabled | inner_button_enabled | down_enabled ;
+  wire [7:0] tmp1, tmp2;
+  assign tmp1 = all >> (1+next_floor);
+  assign tmp2 = all << (8-next_floor);
+
   always @(*) begin
     if(direction[D_UP]) begin
-      decCond = (up_enabled[next_floor]|inner_button_enabled[next_floor]) 
-        ||((((up_enabled|inner_button_enabled|down_enabled) >> 1) >> next_floor) == 0);
+      decCond = up_enabled[next_floor] || inner_button_enabled[next_floor] || (tmp1 == 8'b0);
     end 
     else if(direction[D_DOWN]) begin
-      decCond = (down_enabled[next_floor] || inner_button_enabled[next_floor])
-        || ((((up_enabled|inner_button_enabled|down_enabled) << 1) << (8-next_floor)) == 0);
+      decCond = down_enabled[next_floor] || inner_button_enabled[next_floor] || (tmp2 == 8'b0);
     end
     else 
       decCond = 1;

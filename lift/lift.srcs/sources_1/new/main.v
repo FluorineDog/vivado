@@ -46,19 +46,16 @@ module main(
              ONGOING_STATE   = 3'h5,
              DEC_STATE       = 3'h6;
 
-  parameter  OPEN_TIME         = 2,
+  parameter  OPEN_TIME         = 4,
              OPENED_DELAY      = 6,
-             CLOSE_TIME        = 2,
-             ACC_TIME          = 2,
-             DEC_TIME          = 2,
-             CHECKFLOOR_TIME   = 4,
-             TRANSFLOOR_TIME   = 5,
-             STOP_DELAY        = 1;
-  reg [2:0] newState;
+             CLOSE_TIME        = 4,
+             ACC_TIME          = 4,
+             DEC_TIME          = 4,
+             CHECKFLOOR_TIME   = 8,
+             TRANSFLOOR_TIME   = 10,
+             STOP_DELAY        = 2;
   reg RST_status;
-//  reg [2:0] state;
   reg [31:0] duetime;
-//  reg [1:0] direction;
   wire [1:0] nextDirection;
   wire isStopping;
   wire accCond, decCond, closeCond, openCond, timeoutCond;
@@ -71,7 +68,7 @@ module main(
                         direction, nextDirection, accCond);
   openCondition opc0(RST_status, state, current_floor, up, down, direction, force_open, force_close, 
                      openCond, closeCond);
-  decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button, decCond);
+  decCondition decC0(next_floor, direction, up_enabled, down_enabled, inner_button_enabled, decCond);
   unix ux0(clk500Hz, unix_timestamp);
   assign timeoutCond = unix_timestamp >= duetime;
   assign remaining_time = (timeoutCond)? 0:(duetime - unix_timestamp);
@@ -82,80 +79,85 @@ module main(
     direction = 0;
     duetime = 0;
     current_floor = 0;
-    delay = 0;
   end
-  reg [2:0] updateFloor;
 
   always @ (posedge clk500Hz) begin
-    if(timeoutCond) begin 
-      case (state)
-        STOP_STATE    : begin
-            if(accCond) begin
-              newState <= ACC_STATE;
-              duetime <= unix_timestamp + ACC_TIME;
-            end
-          end
-        OPENING_STATE : begin
-            newState <= OPENED_STATE;
-            duetime <= unix_timestamp + OPENED_DELAY;
-          end
-        OPENED_STATE  : begin
-            newState <= CLOSING_STATE;
-            duetime <= unix_timestamp + CLOSE_TIME;
-          end
-        CLOSING_STATE : begin
-            newState <= STOP_STATE;
-            duetime <= unix_timestamp + STOP_DELAY;
-          end
-        ACC_STATE     : begin
-            newState <= ONGOING_STATE;
-            duetime <= unix_timestamp + CHECKFLOOR_TIME;
-          end
-        ONGOING_STATE : begin
-            if(decCond) begin
-              newState <= DEC_STATE;
-              duetime <= unix_timestamp + DEC_TIME;
-            end
-            else begin
-              updateFloor <= next_floor;
-              newState <= ONGOING_STATE;
-              duetime <= unix_timestamp + TRANSFLOOR_TIME;
-            end
-          end
-        DEC_STATE     : begin
-            updateFloor <= next_floor;
-            newState <= OPENING_STATE;
-            duetime <= unix_timestamp + OPEN_TIME;
-         end
-        default       : begin
-            newState <= STOP_STATE;
-          end
-      endcase
-    end
-    else if(openCond) begin 
+    if(openCond) begin 
       case(state)
         STOP_STATE: begin
-          newState <= OPENING_STATE;
+          direction <= nextDirection;
+          state <= OPENING_STATE;
           duetime <= unix_timestamp + OPEN_TIME;
         end  
         OPENED_STATE  : begin
-          newState <= OPENED_STATE;
+          state <= OPENED_STATE;
           duetime <= unix_timestamp + OPENED_DELAY;
         end
         CLOSING_STATE : begin
-          newState <= OPENING_STATE;
+          state <= OPENING_STATE;
           duetime <= unix_timestamp + unix_timestamp + OPEN_TIME - duetime + 1;
         end
       endcase 
     end
     else if (closeCond) begin
-      if(state == OPENED_STATE) begin 
-        newState <= CLOSING_STATE;
-        duetime <= unix_timestamp + CLOSE_TIME;
-      end
+      state <= CLOSING_STATE;
+      duetime <= unix_timestamp + CLOSE_TIME;
+    end
+    else if(timeoutCond) begin 
+      case (state)
+        STOP_STATE    : begin
+            direction <= nextDirection;
+            if(accCond) begin
+              state <= ACC_STATE;
+              duetime <= unix_timestamp + ACC_TIME;
+            end
+          end
+        OPENING_STATE : begin
+            state <= OPENED_STATE;
+            duetime <= unix_timestamp + OPENED_DELAY;
+          end
+        OPENED_STATE  : begin
+            direction <= nextDirection;
+            state <= CLOSING_STATE;
+            duetime <= unix_timestamp + CLOSE_TIME;
+          end
+        CLOSING_STATE : begin
+            state <= STOP_STATE;
+            duetime <= unix_timestamp + STOP_DELAY;
+          end
+        ACC_STATE     : begin
+            state <= ONGOING_STATE;
+            duetime <= unix_timestamp + CHECKFLOOR_TIME;
+          end
+        ONGOING_STATE : begin
+            if(decCond) begin
+              state <= DEC_STATE;
+              duetime <= unix_timestamp + DEC_TIME;
+            end
+            else begin
+              current_floor <= next_floor;
+              state <= ONGOING_STATE;
+              duetime <= unix_timestamp + TRANSFLOOR_TIME;
+            end
+          end
+        DEC_STATE     : begin
+            direction <= nextDirection;
+            current_floor <= next_floor;
+            if(!RST_status) begin
+              state <= OPENING_STATE;
+              duetime <= unix_timestamp + OPEN_TIME;
+            end
+            else begin
+              state <= STOP_STATE;
+            end
+         end
+        default       : begin
+            state <= STOP_STATE;
+          end
+      endcase
     end
   end
-
+  
   always @ (posedge clk500Hz or negedge RST) begin
     if(!RST) begin 
       RST_status <= 1;
@@ -164,22 +166,4 @@ module main(
       RST_status <= RST_status && !(state == STOP_STATE);
     end
   end
-//  always @ (posedge clk500Hz) begin
-//    if(isStopping) begin
-//      direction <= nextDirection;
-//    end
-//    else begin
-//      direction <= direction;
-//      end
-//    if(timeoutCond || openCond || closeCond) begin
-//      state <= newState;
-//      current_floor <= updateFloor;
-//      duetime <= unix_timestamp + delay;
-//    end
-//    else begin 
-//      state <= state;
-//      current_floor <= current_floor;
-//      duetime <= duetime;
-//    end
-//  end
 endmodule
