@@ -48,15 +48,18 @@ module addtionalStateHelper(
     inner_button_enabled = 0;
   end
   assign up_request = 
-    ((up_enabled | down_enabled | inner_button_enabled) 
+    up_enabled[isStopping ? current_floor : next_floor] 
+    || ((up_enabled | down_enabled | inner_button_enabled) 
       >> (current_floor + 1)) != 8'b0;
   assign down_request = 
-    ((up_enabled | down_enabled | inner_button_enabled) 
+    down_enabled[isStopping ? current_floor : next_floor] 
+    || ((up_enabled | down_enabled | inner_button_enabled) 
       << (8 - current_floor)) != 8'b0;
-  assign nextDirection[D_UP]   = (direction[D_UP]||!down_request) && up_request;
-  assign nextDirection[D_DOWN] = (direction[D_DOWN]||!up_request) && down_request; 
+
   assign next_floor = (direction[D_DOWN])? current_floor - 1:
                       (direction[D_UP])  ? current_floor + 1: current_floor;
+  assign nextDirection[D_UP]   = (!direction[D_DOWN]||!down_request) && up_request; //prefer up 
+  assign nextDirection[D_DOWN] = (direction[D_DOWN]||!up_request) && down_request; 
 
   always @ (posedge clk500Hz) begin 
     if(RST_status) begin 

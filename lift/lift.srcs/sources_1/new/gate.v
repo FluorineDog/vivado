@@ -59,7 +59,7 @@ module gate(
           0:   gate_led = 6'b000000;
           default: gate_led = 6'b111111;
         endcase
-      default: gate_led = 6'b110011;
+      default: gate_led = 6'b111000;
     endcase
   end
 endmodule

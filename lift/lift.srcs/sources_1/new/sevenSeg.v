@@ -26,6 +26,9 @@ module sevenSeg(
   input [3:0] timer,     
   input [2:0] state,
   input [1:0] direction, 
+  input outside_switch, 
+  input [7:0] up_enabled,
+  input [7:0] down_enabled,
   input clk,      // require : 1ms-4ms period
   output reg [7:0] AN,
   output reg [7:0] seg_data
@@ -50,13 +53,20 @@ module sevenSeg(
     for(i=0;i<8;i=i+1)begin
       AN[i]=(choose!=i);
     end
-    case(choose)
-      'h7:      seg_data = switch_floor_seg;
-      'h4:      seg_data = gravity_seg; 
-      'h2:      seg_data = lift_floor_seg;
-      'h0:      seg_data = timer_seg;
-      default   seg_data = 8'b11111101;
-    endcase
+    if(!outside_switch) begin
+      case(choose)
+        'h7:      seg_data = switch_floor_seg;
+        'h4:      seg_data = gravity_seg; 
+        'h2:      seg_data = lift_floor_seg;
+        'h0:      seg_data = timer_seg;
+        default   seg_data = 8'b11111101;
+      endcase
+    end
+    else begin
+      seg_data = 8'b11111111;
+      seg_data[7] = !up_enabled[choose];
+      seg_data[4] = !down_enabled[choose];
+    end
   end
   
   always @(posedge clk) begin
