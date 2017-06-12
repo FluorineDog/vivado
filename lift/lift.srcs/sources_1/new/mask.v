@@ -26,8 +26,6 @@ module mask(
   input [2:0] floor_switch,
   input up_trigger,
   input down_trigger,
-  output reg up_enabled_LED,
-  output reg down_enabled_LED,
   input [7:0] inner_button,
   output [7:0] inner_button_enabled,
   input force_open,
@@ -39,6 +37,8 @@ module mask(
   output [5:0] gate_led, 
   input outside_switch
   );
+  // reg up_enabled_LED,
+  // reg down_enabled_LED,
   wire clk500Hz;
   clockWrapper clkwp0(clk100MHz, clk500Hz);
   parameter  D_UP   = 1'b0,
@@ -64,8 +64,8 @@ module mask(
     for(i=0;i<8;i=i+1)begin
       up[i] = (floor_switch==i) && up_trigger && i!=7;
       down[i] = (floor_switch==i) && down_trigger && i!=0;
-      up_enabled_LED = up_enabled[floor_switch];
-      down_enabled_LED = down_enabled[floor_switch];
+      // up_enabled_LED = up_enabled[floor_switch];
+      // down_enabled_LED = down_enabled[floor_switch];
     end
   end
 

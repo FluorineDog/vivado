@@ -95,7 +95,7 @@ module main(
         end
         CLOSING_STATE : begin
           state <= OPENING_STATE;
-          duetime <= unix_timestamp + unix_timestamp + OPEN_TIME - duetime + 1;
+          duetime <= unix_timestamp + unix_timestamp + OPEN_TIME - duetime;
         end
       endcase 
     end

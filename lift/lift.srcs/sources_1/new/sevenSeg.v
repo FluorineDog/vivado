@@ -66,6 +66,7 @@ module sevenSeg(
       seg_data = 8'b11111111;
       seg_data[7] = !up_enabled[choose];
       seg_data[4] = !down_enabled[choose];
+      seg_data[0] = !(lift_floor == choose);
     end
   end
   
